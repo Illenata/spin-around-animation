@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useRef, useEffect } from 'react'
 import Shopers from './images/icon-social-shoppers-big.svg'
 import Independent from './images/icon-independent-brands-big.svg'
 import Employers from './images/icon-employers-conscience-big.svg'
@@ -47,9 +47,9 @@ const textBlock = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. A en
 const App = (): JSX.Element => {
   const firstTextRef = useRef<HTMLParagraphElement>(null)
   const secondTextRef = useRef<HTMLParagraphElement>(null)
-  const shopersIconRef = useRef<HTMLImageElement>(null) as React.RefObject<HTMLImageElement>
-  const independentIconRef = useRef<HTMLImageElement>(null) as React.RefObject<HTMLImageElement>
-  const employersIconRef = useRef<HTMLImageElement>(null) as React.RefObject<HTMLImageElement>
+  const shopersIconRef = useRef<HTMLImageElement>(null)
+  const independentIconRef = useRef<HTMLImageElement>(null)
+  const employersIconRef = useRef<HTMLImageElement>(null)
 
   const animationOnScroll = () => {
     if (firstTextRef.current && secondTextRef.current) {
@@ -60,7 +60,7 @@ const App = (): JSX.Element => {
       const duration = firstTextRefHeight + secondTextRefHeight
       let animationTime = -position1stTextFromTop
 
-      // fix the scroll accuracy
+      // handle the scroll accuracy
       if (-position1stTextFromTop < 0) {
         animationTime = 0
       }
@@ -71,16 +71,16 @@ const App = (): JSX.Element => {
       if (animationTime >= 0 && animationTime <= duration) {
         const options = { duration, fill: 'both'} as KeyframeAnimationOptions
 
-        const shopersAnimation = shopersIconRef?.current?.animate(
+        const shopersAnimation = shopersIconRef.current?.animate(
           [
-            {transform: `rotate(-120deg) translateX(200px) rotate(120deg) scale(1)`},
-            {transform: `rotate(0deg) translateX(200px) rotate(0deg) scale(1.354)`},
-            {transform: `rotate(120deg) translateX(200px) rotate(-120deg) scale(1)`},
+            {transform: 'rotate(-120deg) translateX(200px) rotate(120deg) scale(1)'},
+            {transform: 'rotate(0deg) translateX(200px) rotate(0deg) scale(1.354)'},
+            {transform: 'rotate(120deg) translateX(200px) rotate(-120deg) scale(1)'},
           ],
           options,
         )
 
-        const independentAnimation = independentIconRef?.current?.animate(
+        const independentAnimation = independentIconRef.current?.animate(
           [
             {transform: 'rotate(0deg) translateX(200px) rotate(0deg) scale(1.354)'},
             {transform: 'rotate(120deg) translateX(200px) rotate(-120deg) scale(1)'},
@@ -89,7 +89,7 @@ const App = (): JSX.Element => {
           options,
         )
 
-        const employersAnimation = employersIconRef?.current?.animate(
+        const employersAnimation = employersIconRef.current?.animate(
           [
             {transform: 'rotate(120deg) translateX(200px) rotate(-120deg) scale(1)'},
             {transform: 'rotate(240deg) translateX(200px) rotate(-240deg) scale(1)'},
