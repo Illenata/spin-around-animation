@@ -1,5 +1,23 @@
 import styled from 'styled-components';
-import Globe from './images/illustration-ecosystem-noicon.svg';
+import Globe from '../images/illustration-ecosystem-noicon.svg';
+
+export const Header = styled.header`
+  z-index: 1;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  background: white;
+`
+
+export const Title = styled.h1`
+  margin: 50px auto 0;
+  text-align: center;
+`
 
 export const Wrapper = styled.div`
   height: 100vh;
