@@ -3,9 +3,7 @@ import useIntersectionObserver from '../use-intersection-observer'
 import PageComponent from '../component'
 
 const AnimationOnTrigger = (): JSX.Element => {
-  const firstTextRef = useRef<HTMLParagraphElement>(null)
-  const secondTextRef = useRef<HTMLParagraphElement>(null)
-  const thirdTextRef = useRef<HTMLParagraphElement>(null)
+  const textRefs = useRef<HTMLParagraphElement[]>([])
   const shopersIconRef = useRef<HTMLImageElement>(null)
   const independentIconRef = useRef<HTMLImageElement>(null)
   const employersIconRef = useRef<HTMLImageElement>(null)
@@ -97,9 +95,19 @@ const AnimationOnTrigger = (): JSX.Element => {
     }
   }, [countAnimation, animationDirection])
 
-  useIntersectionObserver(firstTextRef, '0px', 1, () => setCountAnimation(0), () => null, isUnobserveble)
-  useIntersectionObserver(secondTextRef, '0px', 1, () => setCountAnimation(1), () => null, isUnobserveble)
-  useIntersectionObserver(thirdTextRef, '0px', 1, () => setCountAnimation(2), () => null, isUnobserveble)
+  const options = new Map<HTMLParagraphElement, number>()
+
+  useEffect(() => {
+    textRefs.current.forEach((ref, i) => {
+      options.set(ref, i)
+    })
+  }, [textRefs.current.length])
+
+  useIntersectionObserver(options, '0px', 1, setCountAnimation, () => null, isUnobserveble)
+
+  // useIntersectionObserver(firstTextRef, '0px', 1, () => setCountAnimation(0), () => null, isUnobserveble)
+  // useIntersectionObserver(secondTextRef, '0px', 1, () => setCountAnimation(1), () => null, isUnobserveble)
+  // useIntersectionObserver(thirdTextRef, '0px', 1, () => setCountAnimation(2), () => null, isUnobserveble)
 
   return (
     <PageComponent
@@ -108,9 +116,7 @@ const AnimationOnTrigger = (): JSX.Element => {
         shopersIconRef,
         independentIconRef,
         employersIconRef,
-        firstTextRef,
-        secondTextRef,
-        thirdTextRef,
+        textRefs,
       }}
     />
   )

@@ -2,17 +2,16 @@ import { useRef, useEffect } from 'react'
 import PageComponent from '../component'
 
 const Scrub = (): JSX.Element => {
-  const firstTextRef = useRef<HTMLParagraphElement>(null)
-  const secondTextRef = useRef<HTMLParagraphElement>(null)
+  const textRefs = useRef<HTMLParagraphElement[]>([])
   const shopersIconRef = useRef<HTMLImageElement>(null)
   const independentIconRef = useRef<HTMLImageElement>(null)
   const employersIconRef = useRef<HTMLImageElement>(null)
 
   const animationOnScroll = () => {
-    if (firstTextRef.current && secondTextRef.current) {
-      const position1stTextFromTop = firstTextRef.current.getBoundingClientRect().top
-      const firstTextRefHeight = firstTextRef.current.offsetHeight
-      const secondTextRefHeight = secondTextRef.current.offsetHeight
+    if (textRefs.current[0] && textRefs.current[1]) {
+      const position1stTextFromTop = textRefs.current[0].getBoundingClientRect().top
+      const firstTextRefHeight = textRefs.current[0].offsetHeight
+      const secondTextRefHeight = textRefs.current[1].offsetHeight
 
       const duration = firstTextRefHeight + secondTextRefHeight
       let animationTime = -position1stTextFromTop
@@ -81,8 +80,7 @@ const Scrub = (): JSX.Element => {
         shopersIconRef,
         independentIconRef,
         employersIconRef,
-        firstTextRef,
-        secondTextRef,
+        textRefs,
       }}
     />
   )

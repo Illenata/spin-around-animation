@@ -79,7 +79,7 @@ const HorizontalAnimation = (): JSX.Element => {
   const lettersArray = word.split('')
 
   return (
-    <>
+    <div>
       <Title>
         Horizontal gsap Animation
       </Title>
@@ -91,7 +91,7 @@ const HorizontalAnimation = (): JSX.Element => {
           </Letter>
         ))}
       </Container>
-    </>
+    </div>
   )
 }
 

@@ -1,4 +1,4 @@
-import { RefObject } from 'react'
+import { RefObject, MutableRefObject } from 'react'
 import Shopers from '../images/icon-social-shoppers-big.svg'
 import Independent from '../images/icon-independent-brands-big.svg'
 import Employers from '../images/icon-employers-conscience-big.svg'
@@ -13,7 +13,7 @@ import {
   IndependentIcon,
   EmployersIcon,
 } from './page-component.styled'
-import { renderText, textBlock } from '../constants'
+import { renderText, textBlocks } from '../constants'
 
 interface PageComponentProps {
   title: string
@@ -21,9 +21,7 @@ interface PageComponentProps {
     shopersIconRef: RefObject<HTMLImageElement>
     independentIconRef: RefObject<HTMLImageElement>
     employersIconRef: RefObject<HTMLImageElement>
-    firstTextRef?: RefObject<HTMLParagraphElement>
-    secondTextRef: RefObject<HTMLParagraphElement>
-    thirdTextRef?: RefObject<HTMLParagraphElement>
+    textRefs: MutableRefObject<HTMLParagraphElement[]>
   }
 }
 
@@ -33,11 +31,16 @@ const PageComponent = ({
     shopersIconRef,
     independentIconRef,
     employersIconRef,
-    firstTextRef,
-    secondTextRef,
-    thirdTextRef,
+    textRefs,
   }
-}: PageComponentProps): JSX.Element => (
+}: PageComponentProps): JSX.Element => {
+  const addRef = (ref: HTMLParagraphElement) => {
+    if (ref && !textRefs.current.includes(ref)) {
+      textRefs.current.push(ref)
+    }
+  }
+
+  return (
   <Wrapper>
     <Title>{title}</Title>
     <Container color='pink'>
@@ -50,15 +53,17 @@ const PageComponent = ({
         <EmployersIcon src={Employers} alt="Employers" ref={employersIconRef} />
       </GlobeBackground>
       <TextPart>
-        <Text ref={firstTextRef}>{textBlock}</Text>
-        <Text ref={secondTextRef}>{textBlock}</Text>
-        <Text ref={thirdTextRef}>{textBlock}</Text>
+        {textBlocks.map((text, i) => (
+          <Text ref={(ref: HTMLParagraphElement) => addRef(ref)} key={i}> {/* TODO: fix key */}
+            {text}
+          </Text>
+        ))}
       </TextPart>
     </Container>
     <Container color='yellow'>
       {renderText()}
     </Container>
   </Wrapper>
-)
+)}
 
 export default PageComponent

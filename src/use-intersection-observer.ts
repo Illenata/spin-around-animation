@@ -1,15 +1,15 @@
-import { useEffect, RefObject } from "react"
+import { useEffect, SetStateAction, Dispatch } from "react"
 
 const useIntersectionObserver = (
-  ref: RefObject<HTMLElement>,
+  elementsOptions: Map<HTMLParagraphElement, number>,
   margin: string,
   threshold: number,
-  actionOnView: () => void,
+  actionOnView: Dispatch<SetStateAction<number | null>>,
   actionOutOfView: () => void | null,
   isUnobserve: boolean,
 ): void => {
   useEffect(() => {
-    if (!ref.current) return
+    if (!elementsOptions.size) return
 
     const options = {
       root: null,
@@ -17,25 +17,27 @@ const useIntersectionObserver = (
       threshold,
     }
 
-    const observerCallback = (entries: IntersectionObserverEntry[]): void => {
-      if (!isUnobserve) {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            actionOnView()
-          } else if (actionOutOfView) {
-            actionOutOfView()
-          }
-        })
+    elementsOptions.forEach((argument, element) => {
+      const observerCallback = (entries: IntersectionObserverEntry[]): void => {
+        if (!isUnobserve) {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              actionOnView(argument)
+            } else if (actionOutOfView) {
+              actionOutOfView()
+            }
+          })
+        }
       }
-    }
-
-    const observer = new IntersectionObserver(observerCallback, options)
-    observer.observe(ref.current)
-
-    if (isUnobserve) {
-      observer.unobserve(ref.current)
-    }
-  }, [ref, isUnobserve])
+  
+      const observer = new IntersectionObserver(observerCallback, options)
+      observer.observe(element)
+  
+      if (isUnobserve) {
+        observer.unobserve(element)
+      }
+    })
+  }, [elementsOptions, isUnobserve])
 }
 
 export default useIntersectionObserver
