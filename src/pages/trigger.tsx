@@ -95,15 +95,9 @@ const AnimationOnTrigger = (): JSX.Element => {
     }
   }, [countAnimation, animationDirection])
 
-  const options = new Map<HTMLParagraphElement, number>()
+  const args = [0, 1, 2]
 
-  useEffect(() => {
-    textRefs.current.forEach((ref, i) => {
-      options.set(ref, i)
-    })
-  }, [textRefs.current.length])
-
-  useIntersectionObserver(options, '0px', 1, setCountAnimation, () => null, isUnobserveble)
+  useIntersectionObserver(textRefs.current, args, '0px', 1, setCountAnimation, () => null, isUnobserveble)
 
   return (
     <PageComponent

@@ -8,10 +8,13 @@ const Scrub = (): JSX.Element => {
   const employersIconRef = useRef<HTMLImageElement>(null)
 
   const animationOnScroll = () => {
-    if (textRefs.current[0] && textRefs.current[1]) {
-      const position1stTextFromTop = textRefs.current[0].getBoundingClientRect().top
-      const firstTextRefHeight = textRefs.current[0].offsetHeight
-      const secondTextRefHeight = textRefs.current[1].offsetHeight
+    const firstText = textRefs.current[0]
+    const secondText = textRefs.current[1]
+
+    if (firstText && secondText) {
+      const position1stTextFromTop = firstText.getBoundingClientRect().top
+      const firstTextRefHeight = firstText.offsetHeight
+      const secondTextRefHeight = secondText.offsetHeight
 
       const duration = firstTextRefHeight + secondTextRefHeight
       let animationTime = -position1stTextFromTop
@@ -28,7 +31,7 @@ const Scrub = (): JSX.Element => {
         const getTransformProps = (deg: string, rotate: string, scale: string) => ({
           transform: `rotate(${deg}deg) translateX(200px) rotate(${rotate}deg) scale(${scale})`
         })
-        
+
         const animationItems = [{
           ref: shopersIconRef.current,
           transformOptions: [
@@ -53,7 +56,7 @@ const Scrub = (): JSX.Element => {
             getTransformProps('360', '-360', '1.354'),
           ],
         }]
-        
+
         animationItems.forEach(({ ref, transformOptions }) => {
           const options = { duration, fill: 'both'} as KeyframeAnimationOptions
           
@@ -66,7 +69,7 @@ const Scrub = (): JSX.Element => {
   }
 
   useEffect(() => {
-      window.addEventListener('scroll', animationOnScroll)
+    window.addEventListener('scroll', animationOnScroll)
 
     return () => {
       window.removeEventListener('scroll', animationOnScroll)

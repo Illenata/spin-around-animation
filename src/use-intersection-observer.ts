@@ -1,15 +1,16 @@
-import { useEffect, SetStateAction, Dispatch } from "react"
+import { useEffect } from "react"
 
 const useIntersectionObserver = (
-  elementsOptions: Map<HTMLParagraphElement, number>,
+  elements: HTMLElement[],
+  args: any[],
   margin: string,
   threshold: number,
-  actionOnView: Dispatch<SetStateAction<number | null>>,
+  actionOnView: (argument?: any) => void,
   actionOutOfView: () => void | null,
   isUnobserve: boolean,
 ): void => {
   useEffect(() => {
-    if (!elementsOptions.size) return
+    if (!elements.length) return
 
     const options = {
       root: null,
@@ -17,19 +18,21 @@ const useIntersectionObserver = (
       threshold,
     }
 
-    elementsOptions.forEach((argument, element) => {
+    const observers = [] as IntersectionObserver[]
+
+    elements.forEach((element, i) => {
       const observerCallback = (entries: IntersectionObserverEntry[]): void => {
         if (!isUnobserve) {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
-              actionOnView(argument)
+              args.length ? actionOnView(args[i]) : actionOnView()
             } else if (actionOutOfView) {
               actionOutOfView()
             }
           })
         }
       }
-  
+ 
       const observer = new IntersectionObserver(observerCallback, options)
       observer.observe(element)
   
@@ -37,7 +40,13 @@ const useIntersectionObserver = (
         observer.unobserve(element)
       }
     })
-  }, [elementsOptions, isUnobserve])
+
+    return () => {
+      observers.forEach((observer) => {
+        observer.disconnect()
+      })
+    }
+  }, [elements, isUnobserve])
 }
 
 export default useIntersectionObserver
